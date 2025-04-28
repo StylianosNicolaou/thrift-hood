@@ -1,65 +1,102 @@
 "use client";
-import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const FeaturedLookbook: React.FC = () => {
-  // Example array of featured images
-  const featuredImages = [
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const imagesRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  const images = [
     "/images/look1.jpg",
     "/images/look2.jpg",
     "/images/look3.jpg",
+    "/images/look4.jpg",
+    "/images/look5.jpg",
+    "/images/look6.jpg",
   ];
 
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      // Animate title
+      gsap.from(".lookbook-title", {
+        opacity: 0,
+        y: 40,
+        duration: 1,
+        ease: "power3.out",
+      });
+
+      // Animate images
+      gsap.from(imagesRef.current, {
+        opacity: 0,
+        y: 50,
+        rotate: (index: number) => Math.random() * 10 - 5,
+        stagger: 0.2,
+        delay: 0.3,
+        duration: 1,
+        ease: "power3.out",
+      });
+
+      // Animate background graffiti wall slow parallax
+      gsap.to(".graffiti-wall-bg", {
+        yPercent: 20,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1, // smooth scrolling
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="relative py-20 bg-[#1B1B1B] text-white">
-      {/* Background Texture */}
-      <div className="absolute inset-0 bg-noise-pattern opacity-10 pointer-events-none" />
+    <section
+      ref={sectionRef}
+      className="relative py-24 bg-asphalt text-white overflow-hidden"
+    >
+      {/* Moving Graffiti Wall Background */}
+      <div className="absolute inset-0 bg-graffiti-wall bg-cover bg-center opacity-10 graffiti-wall-bg pointer-events-none" />
 
       {/* Section Title */}
-      <motion.h2
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="text-4xl md:text-6xl font-extrabold graffiti-font text-center mb-12"
-      >
-        🔥 Latest Fits
-      </motion.h2>
-
-      {/* Image Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 md:px-20">
-        {featuredImages.map((src, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: index * 0.2 }}
-            viewport={{ once: true }}
-            className="relative overflow-hidden rounded-lg shadow-lg group"
-          >
-            <img
-              src={src}
-              alt={`Look ${index + 1}`}
-              className="w-full h-[400px] object-cover transform group-hover:scale-105 transition-transform duration-500"
-            />
-
-            {/* Graffiti Tag on Hover */}
-            <div className="absolute top-4 left-4 bg-[#FF4747] text-black font-bold px-3 py-1 rounded graffiti-font text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              FRESH DROP
-            </div>
-          </motion.div>
-        ))}
+      <div className="relative max-w-7xl mx-auto px-6 md:px-10 text-center mb-16">
+        <h2 className="text-5xl md:text-7xl graffiti-font font-extrabold lookbook-title">
+          🛹 FEATURED LOOKBOOK
+        </h2>
       </div>
 
-      {/* View Full Lookbook Button */}
-      <div className="flex justify-center mt-16">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          className="bg-[#FFD600] text-black px-10 py-4 rounded-full font-bold hover:scale-105 transition-transform"
-          type="button"
-        >
-          VIEW FULL LOOKBOOK
-        </motion.button>
+      {/* Image Grid */}
+      <div className="relative max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-6 md:px-10">
+        {images.map((src, index) => (
+          <div
+            key={index}
+            ref={(el) => (imagesRef.current[index] = el)}
+            className="relative overflow-hidden rounded-lg shadow-lg group transform-gpu"
+          >
+            <div className="relative overflow-hidden rounded-lg shadow-lg group transform-gpu">
+              <div className="relative w-full h-[400px] overflow-hidden">
+                <img
+                  src={src}
+                  alt={`Look ${index + 1}`}
+                  className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110 group-hover:rotate-[2deg] group-hover:skew-x-1 group-hover:skew-y-1"
+                />
+              </div>
+
+              {/* Sticker Frame Hover */}
+              <div className="absolute inset-0 border-4 border-dashed border-streetYellow opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-lg" />
+
+              {/* Graffiti Tag Floating */}
+              <div className="absolute top-3 left-3 bg-sprayRed text-black text-xs font-bold px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 graffiti-font">
+                FRESH
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

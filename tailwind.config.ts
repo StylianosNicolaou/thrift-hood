@@ -20,6 +20,9 @@ const config: Config = {
         graffiti: ["Bebas Neue", "sans-serif"],
         urbanist: ["Urbanist", "sans-serif"],
       },
+      backgroundImage: {
+        "graffiti-wall": "url('/images/graffiti-wall-texture.jpg')",
+      },
     },
   },
   plugins: [],
