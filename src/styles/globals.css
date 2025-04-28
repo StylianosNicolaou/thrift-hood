@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@400;700&family=Permanent+Marker&display=swap");
+
+/* Base Reset */
+html,
+body {
+  @apply text-white font-body min-h-screen scroll-smooth;
+}
+
+/* Background textures are applied manually in layout.tsx or body class */
+body {
+  background-image: url("/graffiti-texture.jpg"), url("/background-noise.png");
+  background-blend-mode: overlay, normal;
+  background-repeat: repeat;
+  background-size: cover, cover;
+  background-attachment: fixed;
+}
+
+/* Smooth link transitions */
+a {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+/* Text Selection */
+::selection {
+  background-color: #ffd600; /* Street Yellow */
+  color: #1b1b1b; /* Asphalt Black */
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1b1b1b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffd600;
+  border-radius: 4px;
+}
+
+/* Utility Backgrounds */
+.bg-texture {
+  background-image: url("/graffiti-texture.jpg");
+  background-size: cover;
+  background-repeat: repeat;
+}
+
+.bg-noise {
+  background-image: url("/background-noise.png");
+  background-size: contain;
+  background-repeat: repeat;
+  opacity: 0.2;
+}
