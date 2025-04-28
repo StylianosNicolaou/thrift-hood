@@ -1,11 +1,24 @@
-import "./../styles/globals.css";
 import type { Metadata } from "next";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
+import { Urbanist, Bebas_Neue } from "next/font/google";
+import PageTransitionOverlay from "./components/PageTransitionOverlay";
+import "../../globals.css";
+
+// Fonts from Google Fonts (if you want dynamic loading, otherwise you already imported them manually in globals.css)
+const urbanist = Urbanist({
+  subsets: ["latin"],
+  weight: ["400", "700", "900"],
+  variable: "--font-urbanist",
+});
+const bebasNeue = Bebas_Neue({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-bebas",
+});
 
 export const metadata: Metadata = {
-  title: "ThriftHood.cy - Urban Portfolio",
-  description: "Streetwear drops and graffiti culture at its finest.",
+  title: "ThriftHood.cy",
+  description:
+    "Urban streetwear | Skateboard culture | Graffiti aesthetic | Cyprus based",
 };
 
 export default function RootLayout({
@@ -14,11 +27,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="bg-asphalt-black text-white font-body bg-texture min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+    <html lang="en" className={`${urbanist.variable} ${bebasNeue.variable}`}>
+      <body className="relative overflow-x-hidden bg-asphalt text-white">
+        {/* Spray Transition */}
+        <PageTransitionOverlay />
+
+        {/* Main Page Content */}
+        {children}
       </body>
     </html>
   );

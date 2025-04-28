@@ -1,25 +1,24 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: ["./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./src/app/**/*.{ts,tsx}", // 👈 Notice src/app
+    "./src/app/components/**/*.{ts,tsx}", // 👈 Components too
+    "./public/**/*.html",
+  ],
   theme: {
     extend: {
       colors: {
-        "asphalt-black": "#1B1B1B",
-        "street-yellow": "#FFD600",
-        "spray-red": "#FF4747",
-        "electric-blue": "#00BFFF",
-        "toxic-green": "#39FF14",
-        "concrete-gray": "#F5F5F5",
-      },
-      backgroundImage: {
-        texture: "url('/graffiti-texture.jpg')",
-        noise: "url('/background-noise.png')",
+        asphalt: "#1B1B1B",
+        streetYellow: "#FFD600",
+        sprayRed: "#FF4747",
+        electricBlue: "#00BFFF",
+        toxicGreen: "#39FF14",
+        concreteGray: "#F5F5F5",
       },
       fontFamily: {
-        heading: ["Bebas Neue", "Anton", "sans-serif"],
-        body: ["Poppins", "Outfit", "sans-serif"],
-        graffiti: ["Permanent Marker", "cursive"],
+        graffiti: ["Bebas Neue", "sans-serif"],
+        urbanist: ["Urbanist", "sans-serif"],
       },
     },
   },
