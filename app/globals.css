@@ -1,42 +1,101 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------
+   CUSTOM FONT
+-----------------*/
+@font-face {
+  font-family: "ChineseRocks";
+  src: url("/fonts/chineserocks.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.font-chineseRocks {
+  font-family: "ChineseRocks", sans-serif;
 }
 
-html,
+/* ---------------
+   TEXT SELECTION
+-----------------*/
+::selection {
+  background-color: #ff00aa;
+  color: #fff;
+}
+
+/* ---------------
+   BODY + RESET
+-----------------*/
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+  @apply font-chineseRocks bg-black text-white tracking-tight leading-relaxed;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ---------------
+   UTILITIES
+-----------------*/
+
+/* Neon hover buttons (optional override) */
+.btn-neon {
+  @apply font-bold px-6 py-2 text-black bg-lime-400 hover:bg-lime-300 transition-transform duration-200 hover:scale-105 shadow;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+/* Torn border look (for image wrappers) */
+.torn-border {
+  border-image: url("/assets/textures/torn-paper/10.png") 20 round;
+  border-width: 15px;
+  border-style: solid;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* Grunge background overlays */
+.bg-grunge {
+  background-image: url("/assets/textures/grunge/10.png");
+  background-size: cover;
+  background-blend-mode: multiply;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+/* Spray background */
+.bg-spray {
+  background-image: url("/assets/textures/spray/10.png");
+  background-size: cover;
+  opacity: 0.7;
+  mix-blend-mode: overlay;
+}
+
+/* Headline styling */
+.headline {
+  @apply text-yellow-300 text-5xl md:text-7xl font-chineseRocks drop-shadow-lg uppercase;
+}
+
+/* Section divider */
+.section-divider {
+  background-image: url("/assets/textures/drip/10.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  height: 60px;
+  width: 100%;
+  margin: 2rem 0;
+}
+
+/* Torn edge hover mask effect */
+.btn-torn-hover {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.btn-torn-hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/assets/textures/torn-paper/16.png");
+  background-size: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: -1;
+}
+
+.btn-torn-hover:hover::after {
+  opacity: 1;
 }

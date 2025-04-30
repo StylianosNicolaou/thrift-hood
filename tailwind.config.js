@@ -1,12 +1,9 @@
 module.exports = {
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       fontFamily: {
-        chinese: ['"Chinese Rocks"', "sans-serif"],
+        chinese: ["ChineseRocks", "sans-serif"],
       },
       colors: {
         black: "#000000",

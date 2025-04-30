@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ThriftHood.cy | Streetwear × Skate × Graffiti</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;600;800&family=Permanent+Marker&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --black: #1b1b1b;
+        --yellow: #ffd600;
+        --red: #ff4747;
+        --blue: #00bfff;
+        --green: #39ff14;
+        --concrete: #f5f5f5;
+      }
+
+      @keyframes glitch {
+        0% {
+          transform: translate(0);
+        }
+        20% {
+          transform: translate(-2px, 2px);
+        }
+        40% {
+          transform: translate(-2px, -2px);
+        }
+        60% {
+          transform: translate(2px, 2px);
+        }
+        80% {
+          transform: translate(2px, -2px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      @keyframes spraypaint {
+        0% {
+          opacity: 0;
+          filter: blur(10px);
+          transform: scale(0.8);
+        }
+        100% {
+          opacity: 1;
+          filter: blur(0);
+          transform: scale(1);
+        }
+      }
+
+      @keyframes drip {
+        0% {
+          height: 0;
+          top: 0;
+        }
+        100% {
+          height: var(--drip-height);
+          top: 0;
+        }
+      }
+
+      @keyframes skateIn {
+        0% {
+          transform: translateX(-100%) rotate(-5deg);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0) rotate(0deg);
+          opacity: 1;
+        }
+      }
+
+      @keyframes floatSticker {
+        0% {
+          transform: rotate(var(--rotate)) translateY(0);
+        }
+        50% {
+          transform: rotate(calc(var(--rotate) + 2deg)) translateY(-10px);
+        }
+        100% {
+          transform: rotate(var(--rotate)) translateY(0);
+        }
+      }
+
+      @keyframes flickerNeon {
+        0%,
+        19.999%,
+        22%,
+        62.999%,
+        64%,
+        64.999%,
+        70%,
+        100% {
+          opacity: 0.99;
+          filter: drop-shadow(0 0 1px var(--color))
+            drop-shadow(0 0 5px var(--color));
+        }
+        20%,
+        21.999%,
+        63%,
+        63.999%,
+        65%,
+        69.999% {
+          opacity: 0.4;
+          filter: none;
+        }
+      }
+
+      @keyframes borderGlow {
+        0% {
+          box-shadow: 0 0 5px var(--yellow), 0 0 10px var(--yellow);
+        }
+        50% {
+          box-shadow: 0 0 20px var(--yellow), 0 0 30px var(--yellow);
+        }
+        100% {
+          box-shadow: 0 0 5px var(--yellow), 0 0 10px var(--yellow);
+        }
+      }
+
+      body {
+        background-color: var(--black);
+        color: white;
+        font-family: "Poppins", sans-serif;
+        overflow-x: hidden;
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPgo8ZGVmcz4KICAgIDxwYXR0ZXJuIGlkPSJwYXR0ZXJuXzAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcGF0dGVyblRyYW5zZm9ybT0icm90YXRlKDQ1KSI+CiAgICAgICAgPGxpbmUgeDE9IjAiIHkxPSIwIiB4Mj0iMTAiIHkyPSIwIiBzdHJva2U9IiMyNTI1MjUiIHN0cm9rZS13aWR0aD0iMC41Ii8+CiAgICA8L3BhdHRlcm4+CjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuXzApIiBvcGFjaXR5PSIwLjMiLz4KPC9zdmc+");
+        cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' style='fill:white;'><circle cx='12' cy='12' r='6' style='fill:%23FFD600;'/></svg>")
+            12 12,
+          auto;
+      }
+
+      .noise {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXWBgYGHh4d5eXlzc3OLi4ubm5uVlZWPj4+NjY19fX2JiYl/f39ra2uRkZGZmZlpaWmXl5dvb29xcXGTk5NnZ2c8TV1mAAAAG3RSTlNAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAvEOwtAAAFVklEQVR4XpWWB67c2BUFb3g557T/hRo9/WUMZHlgr4Bg8Z4qQgQJlHI4A8SzFVrapvmTF9O7dmYRFZ60YiBhJRCgh1FYhiLAmdvX0CzTOpNE77ME0Zty/nWWzchDtiqrmQDeuv3powQ5ta2eN0FY0InkqDD73lT9c9lEzwUNqgFHs9VQce3TVClFCQrSTfOiYkVJQBmpbq2L6iZavPnAPcoU0dSw0SUTqz/GtrGuXfbyyBniKykOWQWGqwwMA7QiYAxi+IlPdqo+hYHnUt5ZPfnsHJyNiDtnpJyayNBkF6cWoYGAMY92U2hXHF/C1M8uP/ZtYdiuj26UdAdQQSXQErwSOMzt/XWRWAz5GuSBIkwG1H3FabJ2OsUOUhGC6tK4EMtJO0ttC6IBD3kM0ve0tJwMdSfjZo+EEISaeTr9P3wYrGjXqyC1krcKdhMpxEnt5JetoulscpyzhXN5FRpuPHvbeQaKxFAEB6EN+cYN6xD7RYGpXpNndMmZgM5Dcs3YSNFDHUo2LGfZuukSWyUYirJAdYbF3MfqEKmjM+I2EfhA94iG3L7uKrR+GdWD73ydlIB+6hgref1QTlmgmbM3/LeX5GI1Ux1RWpgxpLuZ2+I+IjzZ8wqE4nilvQdkUdfhzI5QDWy+kw5Wgg2pGpeEVeCCA7b85BO3F9DzxB3cdqvBzWcmzbyMiqhzuYqtHRVG2y4x+KOlnyqla8AoWWpuBoYRxzXrfKuILl6SfiWCbjxoZJUaCBj1CjH7GIaDbc9kqBY3W/Rgjda1iqQcOJu2WW+76pZC9QG7M00dffe9hNnseupFL53r8F7YHSwJWUKP2q+k7RdsxyOB11n0xtOvnW4irMMFNV4H0uqwS5ExsmP9AxbDTc9JwgneAT5vTiUSm1E7BSflSt3bfa1tv8Di3R8n3Af7MNWzs49hmauE2wP+ttrq+AsWpFG2awvsuOqbipWHgtuvuaAE+A1Z/7gC9hesnr+7wqCwG8c5yAg3AL1fm8T9AZtp/bbJGwl1pNrE7RuOX7PeMRUERVaPpEs+yqeoSmuOlokqw49pgomjLeh7icHNlG19yjs6XXOMedYm5xH2YxpV2tc0Ro2jJfxC50ApuxGob7lMsxfTbeUv07TyYxpeLucEH1gNd4IKH2LAg5TdVhlCafZvpskfncCfx8pOhJzd76bJWeYFnFciwcYfubRc12Ip/ppIhA1/mSZ/RxjFDrJC5xifFjJpY2Xl5zXdguFqYyTR1zSp1Y9p+tktDYYSNflcxI0iyO4TPBdlRcpeqjK/piF5bklq77VSEaA+z8qmJTFzIWiitbnzR794USKBUaT0NTEsVjZqLaFVqJoPN9ODG70IPbfBHKK+/q/AWR0tJzYHRULOa4MP+W/HfGadZUbfw177G7j/OGbIs8TahLyynl4X4RinF793Oz+BU0saXtUHrVBFT/DnA3ctNPoGbs4hRIjTok8i+algT1lTHi4SxFvONKNrgQFAq2/gFnWMXgwffgYMJpiKYkmW3tTg3ZQ9Jq+f8XN+A5eeUKHWvJWJ2sgJ1Sop+wwhqFVijqWaJhwtD8MNlSBeWNNWTa5Z5kPZw5+LbVT99wqTdx29lMUH4OIG/D86ruKEauBjvH5xy6um/Sfj7ei6UUVk4AIl3MyD4MSSTOFgSwsH/QJWaQ5as7ZcmgBZkzjjU1UrQ74ci1gWBCSGHtuV1H2mhSnO3Wp/3fEV5a+4wz//6qy8JxjZsmxxy5+4w9CDNJY09T072iKG0EnOS0arEYgXqYnXcYHwjTtUNAcMelOd4xpkoqiTYICWFq0JSiPfPDQdnt+4/wuqcXY47QILbgAAAABJRU5ErkJggg==");
+        opacity: 0.1;
+        z-index: 9999;
+        pointer-events: none;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      header {
+        position: relative;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        overflow: hidden;
+      }
+
+      .logo {
+        font-family: "Anton", sans-serif;
+        font-size: 6rem;
+        letter-spacing: 2px;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 2;
+        text-transform: uppercase;
+        transform: skew(-5deg);
+        text-shadow: 5px 5px 0 var(--red), -5px -5px 0 var(--blue);
+        animation: spraypaint 1s ease-out forwards;
+        opacity: 0;
+      }
+
+      .logo:hover {
+        animation: glitch 0.3s infinite;
+      }
+
+      .logo::before {
+        content: "ThriftHood.cy";
+        position: absolute;
+        left: 0;
+        text-shadow: none;
+        color: rgba(255, 71, 71, 0.5);
+        animation: glitch 0.3s infinite;
+        clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+        transform: translate(-5px, 0);
+        opacity: 0.8;
+        display: none;
+      }
+
+      .logo:hover::before {
+        display: block;
+      }
+
+      .logo::after {
+        content: "ThriftHood.cy";
+        position: absolute;
+        left: 0;
+        text-shadow: none;
+        color: rgba(0, 191, 255, 0.5);
+        animation: glitch 0.3s infinite reverse;
+        clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+        transform: translate(5px, 0);
+        opacity: 0.8;
+        display: none;
+      }
+
+      .logo:hover::after {
+        display: block;
+      }
+
+      .tagline {
+        font-family: "Permanent Marker", cursive;
+        font-size: 1.5rem;
+        color: var(--yellow);
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 2;
+        transform: rotate(-2deg);
+        opacity: 0;
+        animation: spraypaint 1s ease-out 0.5s forwards;
+      }
+
+      .spray-animation {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 0%,
+          rgba(255, 255, 255, 0.05) 40%,
+          transparent 70%
+        );
+        transform: scale(0);
+        opacity: 0;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .btn {
+        font-family: "Poppins", sans-serif;
+        font-weight: 800;
+        text-transform: uppercase;
+        padding: 12px 30px;
+        background-color: var(--yellow);
+        color: var(--black);
+        border: none;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-size: 1rem;
+        letter-spacing: 1px;
+        clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+        text-decoration: none;
+        display: inline-block;
+        opacity: 0;
+        animation: spraypaint 0.5s ease-out 1s forwards;
+        transform-origin: center;
+      }
+
+      .btn:hover {
+        transform: scale(1.05) skew(-3deg);
+        box-shadow: 0 0 20px rgba(255, 214, 0, 0.6);
+      }
+
+      .btn:active {
+        transform: scale(0.95) skew(-1deg);
+      }
+
+      .btn::before {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 100%;
+        height: 0;
+        background: rgba(255, 214, 0, 0.3);
+        clip-path: polygon(0 0, 100% 100%, 100% 100%, 0% 100%);
+        transition: all 0.2s ease;
+        z-index: -1;
+      }
+
+      .btn:hover::before {
+        height: 20px;
+      }
+
+      .btn:after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -60%;
+        width: 20%;
+        height: 200%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: rotate(30deg);
+        transition: all 0.5s ease;
+      }
+
+      .btn:hover:after {
+        left: 120%;
+      }
+
+      .graphic {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+      }
+
+      .drip {
+        position: absolute;
+        width: 10px;
+        height: 0;
+        background-color: var(--color, var(--red));
+        border-radius: 0 0 5px 5px;
+        top: 0;
+        animation: drip 2s forwards ease-in;
+        --drip-height: 50px;
+      }
+
+      .sticker {
+        position: absolute;
+        color: white;
+        font-family: "Permanent Marker", cursive;
+        transform: rotate(var(--rotate));
+        background: var(--color);
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+        z-index: 3;
+        animation: floatSticker 4s ease-in-out infinite;
+        opacity: 0;
+        animation-delay: calc(var(--index) * 0.2s + 1.2s);
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .sticker:hover {
+        transform: rotate(var(--rotate)) scale(1.1);
+        z-index: 10;
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+      }
+
+      .sticker::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.2) 0%,
+          rgba(255, 255, 255, 0) 50%,
+          rgba(0, 0, 0, 0.1) 100%
+        );
+        pointer-events: none;
+      }
+
+      .sticker-peel {
+        position: absolute;
+        bottom: -10px;
+        right: -10px;
+        width: 20px;
+        height: 20px;
+        background: var(--color);
+        clip-path: polygon(100% 0, 100% 100%, 0 100%);
+        filter: brightness(0.7);
+        transform-origin: bottom right;
+        transition: transform 0.3s;
+      }
+
+      .sticker:hover .sticker-peel {
+        transform: rotate(-15deg);
+      }
+
+      .skate-container {
+        margin-top: 50px;
+        position: relative;
+        height: 60px;
+        width: 100%;
+        overflow: hidden;
+      }
+
+      .skate {
+        position: absolute;
+        animation: skate 15s linear infinite;
+        font-size: 2rem;
+        white-space: nowrap;
+      }
+
+      .products {
+        padding: 100px 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .products::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPgogICAgPGZpbHRlciBpZD0iZ3JhaW4iIHg9IjAiIHk9IjAiPgogICAgICAgIDxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjAxIiBudW1PY3RhdmVzPSIyIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIiAvPgogICAgPC9maWx0ZXI+CiAgICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZ3JhaW4pIiBvcGFjaXR5PSIwLjA1Ii8+Cjwvc3ZnPg==");
+        opacity: 0.5;
+        z-index: 0;
+      }
+
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .product-card {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 5px;
+        overflow: hidden;
+        position: relative;
+        transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        transform-style: preserve-3d;
+        perspective: 1000px;
+        opacity: 0;
+        transform: translateY(50px);
+      }
+
+      .product-card.animate {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .product-card:hover {
+        transform: translateY(-10px) rotate(-2deg);
+        z-index: 5;
+      }
+
+      .product-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 214, 0, 0.1) 0%,
+          rgba(255, 71, 71, 0.1) 100%
+        );
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .product-card:hover::before {
+        opacity: 1;
+      }
+
+      .product-card img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        filter: contrast(1.1);
+        transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        transform-origin: center;
+      }
+
+      .product-card:hover img {
+        transform: scale(1.05) translateZ(10px);
+        filter: contrast(1.2) brightness(1.1);
+      }
+
+      .product-info {
+        padding: 15px;
+        position: relative;
+        z-index: 2;
+        transition: transform 0.3s ease;
+      }
+
+      .product-card:hover .product-info {
+        transform: translateZ(20px);
+      }
+
+      .product-name {
+        font-family: "Anton", sans-serif;
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+        position: relative;
+        display: inline-block;
+      }
+
+      .product-name::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--yellow);
+        transition: width 0.3s ease;
+      }
+
+      .product-card:hover .product-name::after {
+        width: 100%;
+      }
+
+      .product-price {
+        color: var(--yellow);
+        font-weight: bold;
+        font-size: 1.1rem;
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .product-price::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 4px;
+        background: var(--yellow);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+
+      .product-card:hover .product-price::before {
+        transform: translateX(0);
+      }
+
+      .product-tag {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: var(--red);
+        color: white;
+        font-family: "Permanent Marker", cursive;
+        padding: 5px 10px;
+        transform: rotate(3deg);
+        z-index: 3;
+        font-size: 0.8rem;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      }
+
+      .section-title {
+        font-family: "Anton", sans-serif;
+        font-size: 3rem;
+        color: white;
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+        background: var(--red);
+        padding: 5px 30px;
+        transform: skew(-5deg);
+        opacity: 0;
+        animation: spraypaint 0.8s ease-out forwards;
+        --color: var(--red);
+      }
+
+      .section-title:after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: var(--yellow);
+      }
+
+      .about {
+        padding: 100px 0;
+        position: relative;
+        background: linear-gradient(to bottom, var(--black) 0%, #232323 100%);
+        overflow: hidden;
+      }
+
+      .about::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPgogICAgPGZpbHRlciBpZD0iZ3JhaW4iIHg9IjAiIHk9IjAiPgogICAgICAgIDxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjAxIiBudW1PY3RhdmVzPSIyIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIiAvPgogICAgPC9maWx0ZXI+CiAgICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZ3JhaW4pIiBvcGFjaXR5PSIwLjA1Ii8+Cjwvc3ZnPg==");
+        opacity: 0.5;
+        z-index: 0;
+      }
+
+      .about-content {
+        display: flex;
+        gap: 50px;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .about-text {
+        flex: 1;
+        transform: translateX(-50px);
+        opacity: 0;
+        transition: all 0.8s ease;
+      }
+
+      .about-text.animate {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      .about-image {
+        flex: 1;
+        position: relative;
+        transform: translateX(50px);
+        opacity: 0;
+        transition: all 0.8s ease;
+      }
+
+      .about-image.animate {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      .about-image img {
+        width: 100%;
+        height: auto;
+        border: 5px solid white;
+        transform: rotate(3deg);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        transition: all 0.5s ease;
+      }
+
+      .about-image:hover img {
+        transform: rotate(0deg) scale(1.03);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+      }
+
+      .highlight {
+        color: var(--yellow);
+        font-weight: bold;
+        position: relative;
+        display: inline-block;
+      }
+
+      .highlight::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 30%;
+        background-color: rgba(255, 214, 0, 0.2);
+        z-index: -1;
+        transform: skew(-5deg);
+      }
+
+      .marker-underline {
+        position: relative;
+        display: inline-block;
+      }
+
+      .marker-underline::after {
+        content: "";
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAiPgogICAgPHBhdGggZD0iTTAgNSBDMjAgLTIgNDAgMTIgNjAgMCBDODAgLTEwIDEwMCAxNSAxMDAgNSIgc3Ryb2tlPSIjRkYwMDAwIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz4KPC9zdmc+");
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        opacity: 0.7;
+      }
+
+      .features {
+        padding: 100px 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .features::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPgogICAgPGZpbHRlciBpZD0ibm9pc2UiIHg9IjAiIHk9IjAiPgogICAgICAgIDxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjY1IiBudW1PY3RhdmVzPSIzIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIiAvPgogICAgPC9maWx0ZXI+CiAgICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIiBvcGFjaXR5PSIwLjA1Ii8+Cjwvc3ZnPg==");
+        z-index: 0;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .feature-card {
+        background-color: rgba(255, 255, 255, 0.05);
+        padding: 30px;
+        border-radius: 5px;
+        text-align: center;
+        transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        border-left: 5px solid var(--yellow);
+        transform: translateY(50px);
+        opacity: 0;
+      }
+
+      .feature-card.animate {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+        background-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        color: var(--color, var(--blue));
+        transition: all 0.3s ease;
+        display: inline-block;
+      }
+
+      .feature-card:hover .feature-icon {
+        transform: scale(1.2) rotate(10deg);
+        color: var(--yellow);
+      }
+
+      .feature-title {
+        font-family: "Anton", sans-serif;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .feature-card:hover .feature-title {
+        transform: scale(1.1);
+        color: var(--yellow);
+      }
+
+      .contact {
+        padding: 100px 0;
+        position: relative;
+        background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPgo8ZGVmcz4KICAgIDxwYXR0ZXJuIGlkPSJwYXR0ZXJuXzAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcGF0dGVyblRyYW5zZm9ybT0icm90YXRlKDQ1KSI+CiAgICAgICAgPGxpbmUgeDE9IjAiIHkxPSIwIiB4Mj0iMTAiIHkyPSIwIiBzdHJva2U9IiMzOTM5MzkiIHN0cm9rZS13aWR0aD0iMSIvPgogICAgPC9wYXR0ZXJuPgo8L2RlZnM+CjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjcGF0dGVybl8wKSIgb3BhY2l0eT0iMC4yIi8+Cjwvc3ZnPg=="),
+          linear-gradient(to bottom, #232323 0%, var(--black) 100%);
+      }
+
+      .contact-container {
+        display: flex;
+        gap: 50px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .contact-info {
+        flex: 1;
+        transform: translateX(-50px);
+        opacity: 0;
+        transition: all 0.8s ease;
+      }
+
+      .contact-info.animate {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      .contact-form {
+        flex: 2;
+        transform: translateX(50px);
+        opacity: 0;
+        transition: all 0.8s ease;
+        position: relative;
+      }
+
+      .contact-form.animate {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      .contact-form::before {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        width: calc(100% + 20px);
+        height: calc(100% + 20px);
+        background-color: rgba(255, 214, 0, 0.1);
+        z-index: -1;
+        transform: rotate(-2deg);
+        border-radius: 5px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+        position: relative;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: none;
+        border-bottom: 2px solid var(--yellow);
+        color: white;
+        font-family: "Poppins", sans-serif;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 2;
+      }
+
+      .form-control:focus {
+        background-color: rgba(255, 255, 255, 0.15);
+        outline: none;
+        border-bottom-color: var(--blue);
+        box-shadow: 0 5px 15px rgba(0, 191, 255, 0.2);
+      }
+
+      .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+        transition: all 0.3s ease;
+      }
+
+      .form-control:focus::placeholder {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+
+      textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+      }
+
+      .spray-effect {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .spray-dot {
+        position: absolute;
+        border-radius: 50%;
+        background-color: var(--color, rgba(255, 214, 0, 0.5));
+        opacity: 0;
+      }
+
+      footer {
+        background-color: var(--black);
+        padding: 50px 0;
+        text-align: center;
+        position: relative;
+        border-top: 5px solid var(--yellow);
+      }
+
+      .footer-graffiti {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPgogICAgPGZpbHRlciBpZD0ibm9pc2UiIHg9IjAiIHk9IjAiPgogICAgICAgIDxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjA1IiBudW1PY3RhdmVzPSIyIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIiAvPgogICAgPC9maWx0ZXI+CiAgICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIiBvcGFjaXR5PSIwLjA1Ii8+Cjwvc3ZnPg==");
+        opacity: 0.3;
+        z-index: 0;
+      }
+
+      .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 30px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .social-link {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        color: white;
+        text-decoration: none;
+        font-size: 1.5rem;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .social-link:hover {
+        background-color: var(--yellow);
+        color: var(--black);
+        transform: translateY(-5px) rotate(10deg);
+      }
+
+      .social-link::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at center,
+          rgba(255, 255, 255, 0.5) 0%,
+          transparent 70%
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .social-link:hover::before {
+        opacity: 1;
+      }
+
+      .social-link:active {
+        transform: translateY(0) rotate(0);
+      }
+
+      .copyright {
+        margin-top: 30px;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.5);
+        position: relative;
+        z-index: 2;
+      }
+
+      .neon-effect {
+        --color: var(--yellow);
+        animation: flickerNeon 3s infinite alternate;
+      }
+
+      @keyframes skate {
+        0% {
+          transform: translateX(100%);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
+      }
+
+      /* Map styling */
+      .map-container {
+        position: relative;
+        margin-top: 50px;
+        height: 300px;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        overflow: hidden;
+        border: 2px solid var(--yellow);
+        transform-style: preserve-3d;
+        perspective: 1000px;
+      }
+
+      .cy-map {
+        width: 100%;
+        height: 100%;
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8IS0tIEN5cHJ1cyBvdXRsaW5lIC0tPgogIDxwYXRoIGQ9Ik0xNTAsMTUwIEMyMDAsMTIwIDI1MCwxMDAgMzUwLDEyMCBDNDUwLDE0MCA1MDAsMTUwIDU1MCwxNDAgQzYwMCwxMzAgNjUwLDE1MCA3MDAsMTgwIEM3NTAsMjEwIDY1MCwyNTAgNjAwLDI3MCBDNTUik3MDAgNTAwLDI4MCA0MDAsMjgwIEMzMDAsMjgwIDIwMCwyNTAgMTUwLDIxMCBDMTAwLDE3MCAxMDAsMTgwIDE1MCwxNTBaIiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkQ2MDAiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWRhc2hhcnJheT0iNSw1IiAvPgogIDwhLS0gQ2l0aWVzIC0tPgogIDxjaXJjbGUgY3g9IjI1MCIgY3k9IjE4MCIgcj0iNSIgZmlsbD0iI0ZGNDc0NyIgLz4KICA8Y2lyY2xlIGN4PSI0MDAiIGN5PSIyMDAiIHI9IjgiIGZpbGw9IiMwMEJGRkYiIC8+CiAgPGNpcmNsZSBjeD0iNTAwIiBjeT0iMjMwIiByPSI2IiBmaWxsPSIjRkY0NzQ3IiAvPgogIDxjaXJjbGUgY3g9IjMyMCIgY3k9IjE5MCIgcj0iNSIgZmlsbD0iIzM5RkYxNCIgLz4KICA8Y2lyY2xlIGN4PSI2MDAiIGN5PSIyMDAiIHI9IjciIGZpbGw9IiNGRkQ2MDAiIC8+Cjwvc3ZnPg==");
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        transform: rotateX(10deg);
+        transform-origin: center;
+        transition: all 0.5s ease;
+        animation: mapFloat 5s ease-in-out infinite alternate;
+      }
+
+      @keyframes mapFloat {
+        0% {
+          transform: rotateX(10deg) rotateZ(0deg);
+        }
+        100% {
+          transform: rotateX(5deg) rotateZ(2deg);
+        }
+      }
+
+      .map-marker {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: var(--color, var(--red));
+        transform: translate(-50%, -50%) scale(0);
+        animation: markerPop 0.5s forwards
+          cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        animation-delay: calc(var(--index) * 0.2s);
+        box-shadow: 0 0 10px var(--color, var(--red));
+        z-index: 5;
+      }
+
+      .map-marker::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: var(--color, var(--red));
+        opacity: 0.5;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes markerPop {
+        0% {
+          transform: translate(-50%, -50%) scale(0);
+        }
+        70% {
+          transform: translate(-50%, -50%) scale(1.3);
+        }
+        100% {
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 0.5;
+        }
+        70% {
+          transform: scale(2);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0;
+        }
+      }
+
+      /* STICKERS */
+      .sticker-1 {
+        top: 20%;
+        left: 10%;
+        --rotate: -15deg;
+        --color: var(--red);
+        --index: 1;
+      }
+
+      .sticker-2 {
+        bottom: 30%;
+        right: 15%;
+        --rotate: 10deg;
+        --color: var(--blue);
+        --index: 2;
+      }
+
+      .sticker-3 {
+        top: 35%;
+        right: 20%;
+        --rotate: -5deg;
+        --color: var(--green);
+        --index: 3;
+      }
+
+      .sticker-4 {
+        bottom: 20%;
+        left: 20%;
+        --rotate: 8deg;
+        --color: var(--yellow);
+        --index: 4;
+      }
+
+      /* Spray paint cursor effect */
+      .cursor-spray {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 10000;
+        mix-blend-mode: screen;
+        transform: translate(-50%, -50%);
+        opacity: 0.7;
+        display: none;
+      }
+
+      /* Graffiti tag generator */
+      .tag-generator {
+        position: relative;
+        margin-top: 50px;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        border: 2px dashed var(--yellow);
+      }
+
+      .tag-canvas {
+        width: 100%;
+        height: 200px;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+        cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' style='fill:white;'><circle cx='12' cy='12' r='6' style='fill:%23FF4747;'/></svg>")
+            12 12,
+          auto;
+        margin-bottom: 20px;
+      }
+
+      .tag-controls {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+      }
+
+      .color-picker {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 2px solid white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .color-picker:hover {
+        transform: scale(1.2);
+        box-shadow: 0 0 10px currentColor;
+      }
+
+      .color-picker.active {
+        transform: scale(1.2);
+        box-shadow: 0 0 15px currentColor;
+      }
+
+      .red-paint {
+        background-color: var(--red);
+      }
+
+      .blue-paint {
+        background-color: var(--blue);
+      }
+
+      .green-paint {
+        background-color: var(--green);
+      }
+
+      .yellow-paint {
+        background-color: var(--yellow);
+      }
+
+      .brush-size {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .brush-size:hover {
+        transform: scale(1.2);
+        background-color: rgba(255, 255, 255, 0.3);
+      }
+
+      .brush-size.active {
+        background-color: var(--yellow);
+        color: var(--black);
+        transform: scale(1.2);
+      }
+
+      .brush-dot {
+        width: var(--size);
+        height: var(--size);
+        border-radius: 50%;
+        background-color: white;
+      }
+
+      .small-brush {
+        --size: 4px;
+      }
+
+      .medium-brush {
+        --size: 8px;
+      }
+
+      .large-brush {
+        --size: 12px;
+      }
+
+      /* Skateboard animations */
+      .skateboard {
+        position: fixed;
+        bottom: 20px;
+        left: -100px;
+        transform: rotate(5deg);
+        z-index: 1000;
+        animation: skateBoardMove 10s linear infinite;
+        pointer-events: none;
+        opacity: 0.7;
+      }
+
+      .skateboard img {
+        width: 80px;
+        height: auto;
+      }
+
+      @keyframes skateBoardMove {
+        0% {
+          left: -100px;
+          transform: rotate(5deg);
+        }
+        45% {
+          transform: rotate(5deg);
+        }
+        50% {
+          transform: rotate(-5deg);
+        }
+        95% {
+          transform: rotate(-5deg);
+        }
+        100% {
+          left: calc(100% + 100px);
+          transform: rotate(5deg);
+        }
+      }
+
+      /* Loading animation */
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--black);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .loading-logo {
+        font-family: "Anton", sans-serif;
+        font-size: 5rem;
+        color: white;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        position: relative;
+      }
+
+      .loading-bar-container {
+        width: 300px;
+        height: 10px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+      }
+
+      .loading-bar {
+        height: 100%;
+        width: 0;
+        background-color: var(--yellow);
+        border-radius: 5px;
+        transition: width 0.5s ease;
+      }
+
+      .loading-text {
+        font-family: "Permanent Marker", cursive;
+        color: var(--yellow);
+        font-size: 1.2rem;
+      }
+
+      /* Drop countdown animation */
+      .drop-countdown {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: var(--red);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-family: "Anton", sans-serif;
+        z-index: 100;
+        box-shadow: 0 5px 15px rgba(255, 71, 71, 0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transform: rotate(3deg);
+      }
+
+      .drop-title {
+        font-size: 1rem;
+        margin-bottom: 5px;
+      }
+
+      .drop-timer {
+        font-size: 1.5rem;
+        display: flex;
+        gap: 10px;
+      }
+
+      .timer-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .timer-number {
+        font-size: 2rem;
+        line-height: 1;
+      }
+
+      .timer-label {
+        font-size: 0.7rem;
+        opacity: 0.7;
+      }
+
+      .drop-flames {
+        position: absolute;
+        top: -20px;
+        left: 0;
+        width: 100%;
+        height: 30px;
+        pointer-events: none;
+      }
+
+      .flame {
+        position: absolute;
+        bottom: 0;
+        width: 10px;
+        height: 20px;
+        background-color: orange;
+        border-radius: 50% 50% 0 0;
+        transform-origin: bottom;
+        animation: flameAnimation 0.5s infinite alternate;
+        filter: blur(1px);
+      }
+
+      @keyframes flameAnimation {
+        0% {
+          height: 20px;
+          background-color: orange;
+        }
+        100% {
+          height: 30px;
+          background-color: yellow;
+        }
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 768px) {
+        .logo {
+          font-size: 3.5rem;
+        }
+
+        .tagline {
+          font-size: 1.2rem;
+        }
+
+        .about-content,
+        .contact-container {
+          flex-direction: column;
+        }
+
+        .section-title {
+          font-size: 2.5rem;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .drop-countdown {
+          left: 20px;
+          right: auto;
+        }
+      }
+
+      /* Animation for page reveal */
+      .reveal-mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--black);
+        z-index: 9998;
+        transform-origin: bottom;
+        transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="noise"></div>
+    <div class="loading-screen">
+      <div class="loading-logo">ThriftHood.cy</div>
+      <div class="loading-bar-container">
+        <div class="loading-bar"></div>
+      </div>
+      <div class="loading-text">Loading urban vibes...</div>
+    </div>
+
+    <div class="reveal-mask"></div>
+
+    <div class="spray-animation"></div>
+
+    <!-- Cursor spray effect elements -->
+    <div class="cursor-spray"></div>
+
+    <!-- Drop countdown -->
+    <div class="drop-countdown">
+      <div class="drop-flames">
+        <div class="flame" style="left: 10%; animation-delay: 0.1s"></div>
+        <div class="flame" style="left: 30%; animation-delay: 0.2s"></div>
+        <div class="flame" style="left: 50%; animation-delay: 0.3s"></div>
+        <div class="flame" style="left: 70%; animation-delay: 0.1s"></div>
+        <div class="flame" style="left: 90%; animation-delay: 0.2s"></div>
+      </div>
+      <div class="drop-title">NEXT DROP IN</div>
+      <div class="drop-timer">
+        <div class="timer-block">
+          <div class="timer-number" id="days">00</div>
+          <div class="timer-label">DAYS</div>
+        </div>
+        <div class="timer-block">
+          <div class="timer-number" id="hours">00</div>
+          <div class="timer-label">HRS</div>
+        </div>
+        <div class="timer-block">
+          <div class="timer-number" id="minutes">00</div>
+          <div class="timer-label">MINS</div>
+        </div>
+        <div class="timer-block">
+          <div class="timer-number" id="seconds">00</div>
+          <div class="timer-label">SECS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Random skateboard animation -->
+    <div class="skateboard">
+      <img
+        src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxyZWN0IHg9IjIwIiB5PSIyMCIgd2lkdGg9IjE2MCIgaGVpZ2h0PSIxMCIgZmlsbD0iI0ZGRDYwMCIgcng9IjUiIC8+CiAgPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iMTAiIGZpbGw9IiMzMzMiIC8+CiAgPGNpcmNsZSBjeD0iMTYwIiBjeT0iNDAiIHI9IjEwIiBmaWxsPSIjMzMzIiAvPgo8L3N2Zz4="
+        alt="Skateboard"
+      />
+    </div>
+
+    <header>
+      <div class="container">
+        <h1 class="logo">ThriftHood.cy</h1>
+        <p class="tagline">Where streetwear culture meets skate rebellion</p>
+        <a href="#products" class="btn">SHOP NOW</a>
+
+        <div class="skate-container">
+          <div class="skate">
+            🛹 STREET 🧢 SKATE 🎨 GRAFFITI 🛹 THRIFT 🧢 CULTURE 🎨 URBAN 🛹
+          </div>
+        </div>
+      </div>
+
+      <div class="graphic">
+        <div class="sticker sticker-1">
+          FRESH DROPS
+          <div class="sticker-peel"></div>
+        </div>
+        <div class="sticker sticker-2">
+          ONE OF ONE
+          <div class="sticker-peel"></div>
+        </div>
+        <div class="sticker sticker-3">
+          SKATE OR DIE
+          <div class="sticker-peel"></div>
+        </div>
+        <div class="sticker sticker-4">
+          THRIFT LIFE
+          <div class="sticker-peel"></div>
+        </div>
+      </div>
+    </header>
+
+    <section id="products" class="products">
+      <div class="container">
+        <h2 class="section-title">Latest Drops</h2>
+        <div class="products-grid">
+          <div class="product-card">
+            <div class="product-tag">FRESH</div>
+            <img
+              src="https://source.unsplash.com/random/600x800/?streetwear"
+              alt="Streetwear product"
+            />
+            <div class="product-info">
+              <h3 class="product-name">Vintage Skate Hoodie</h3>
+              <p class="product-price">€45.00</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-tag">RARE</div>
+            <img
+              src="https://source.unsplash.com/random/600x800/?tshirt"
+              alt="Streetwear product"
+            />
+            <div class="product-info">
+              <h3 class="product-name">Graffiti Print Tee</h3>
+              <p class="product-price">€28.00</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-tag">HYPED</div>
+            <img
+              src="https://source.unsplash.com/random/600x800/?sneakers"
+              alt="Streetwear product"
+            />
+            <div class="product-info">
+              <h3 class="product-name">Old School Kicks</h3>
+              <p class="product-price">€65.00</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-tag">LAST ONE</div>
+            <img
+              src="https://source.unsplash.com/random/600x800/?cap"
+              alt="Streetwear product"
+            />
+            <div class="product-info">
+              <h3 class="product-name">Urban Snapback</h3>
+              <p class="product-price">€22.00</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about">
+      <div class="container">
+        <h2 class="section-title" style="--color: var(--blue)">
+          About ThriftHood
+        </h2>
+        <div class="about-content">
+          <div class="about-text">
+            <p>
+              ThriftHood.cy was born in the streets of Cyprus, where skate
+              culture and urban fashion collide. We're not just another thrift
+              shop - we're a
+              <span class="highlight">community of street enthusiasts</span>
+              bringing you the dopest second-hand streetwear finds.
+            </p>
+            <br />
+            <p>
+              Every piece in our collection tells a story, from vintage skate
+              gear to rare streetwear drops. We hunt for the unique, the bold,
+              and the
+              <span class="marker-underline">straight-up fire pieces</span> that
+              define street culture.
+            </p>
+            <br />
+            <p>
+              Join our crew of
+              <span class="highlight">skaters, artists, and style rebels</span>
+              who believe in sustainable fashion with an edge.
+            </p>
+            <br />
+            <a href="#contact" class="btn">JOIN THE HOOD</a>
+          </div>
+          <div class="about-image">
+            <img
+              src="https://source.unsplash.com/random/600x400/?skatepark"
+              alt="About ThriftHood"
+            />
+          </div>
+        </div>
+
+        <!-- Cyprus Map -->
+        <div class="map-container">
+          <div class="cy-map">
+            <div
+              class="map-marker"
+              style="top: 45%; left: 30%; --color: var(--red); --index: 1"
+            ></div>
+            <div
+              class="map-marker"
+              style="top: 50%; left: 50%; --color: var(--blue); --index: 2"
+            ></div>
+            <div
+              class="map-marker"
+              style="top: 58%; left: 65%; --color: var(--green); --index: 3"
+            ></div>
+            <div
+              class="map-marker"
+              style="top: 47%; left: 80%; --color: var(--yellow); --index: 4"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="container">
+        <h2 class="section-title" style="--color: var(--green)">
+          Why ThriftHood
+        </h2>
+        <div class="features-grid">
+          <div class="feature-card" style="--delay: 0.1s">
+            <div class="feature-icon" style="--color: var(--red)">🧢</div>
+            <h3 class="feature-title">Curated Finds</h3>
+            <p>
+              We handpick every item to ensure quality and authenticity that
+              stands out from the mainstream.
+            </p>
+          </div>
+          <div class="feature-card" style="--delay: 0.3s">
+            <div class="feature-icon" style="--color: var(--blue)">🛹</div>
+            <h3 class="feature-title">Skate Culture</h3>
+            <p>
+              Founded by skaters who understand the lifestyle and what makes
+              great streetwear actually great.
+            </p>
+          </div>
+          <div class="feature-card" style="--delay: 0.5s">
+            <div class="feature-icon" style="--color: var(--green)">🎨</div>
+            <h3 class="feature-title">Urban Style</h3>
+            <p>
+              Each drop features one-of-a-kind pieces inspired by graffiti art
+              and street culture.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tag Generator -->
+        <div class="tag-generator">
+          <h3
+            class="feature-title"
+            style="margin-bottom: 20px; text-align: center"
+          >
+            Create Your Graffiti Tag
+          </h3>
+          <canvas
+            class="tag-canvas"
+            id="tagCanvas"
+            width="800"
+            height="400"
+          ></canvas>
+          <div class="tag-controls">
+            <div
+              class="color-picker red-paint active"
+              data-color="#FF4747"
+            ></div>
+            <div class="color-picker blue-paint" data-color="#00BFFF"></div>
+            <div class="color-picker green-paint" data-color="#39FF14"></div>
+            <div class="color-picker yellow-paint" data-color="#FFD600"></div>
+
+            <div class="brush-size small-brush" data-size="5">
+              <div class="brush-dot small-brush"></div>
+            </div>
+            <div class="brush-size medium-brush active" data-size="15">
+              <div class="brush-dot medium-brush"></div>
+            </div>
+            <div class="brush-size large-brush" data-size="30">
+              <div class="brush-dot large-brush"></div>
+            </div>
+
+            <button
+              class="btn"
+              style="margin-left: auto; padding: 5px 15px; font-size: 0.8rem"
+              id="clearCanvas"
+            >
+              CLEAR
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="container">
+        <h2 class="section-title" style="--color: var(--red)">Hit Us Up</h2>
+        <div class="contact-container">
+          <div class="contact-info">
+            <p>
+              Got questions about a drop? Want to sell your gear? Just wanna
+              chat about the scene?
+            </p>
+            <br />
+            <p>
+              Find us at the shop in Limassol or slide into our DMs. We're
+              always down to talk street culture.
+            </p>
+            <br />
+            <p class="highlight neon-effect">info@thrifthood.cy</p>
+            <p>+357 99 123 4567</p>
+            <p>25 Street Art Avenue, Limassol, Cyprus</p>
+          </div>
+          <div class="contact-form">
+            <div class="form-group">
+              <div class="spray-effect" id="nameSpray"></div>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Your Name"
+                id="nameInput"
+              />
+            </div>
+            <div class="form-group">
+              <div class="spray-effect" id="emailSpray"></div>
+              <input
+                type="email"
+                class="form-control"
+                placeholder="Your Email"
+                id="emailInput"
+              />
+            </div>
+            <div class="form-group">
+              <div class="spray-effect" id="messageSpray"></div>
+              <textarea
+                class="form-control"
+                placeholder="Your Message"
+                id="messageInput"
+              ></textarea>
+            </div>
+            <button type="submit" class="btn" id="submitBtn">SEND IT</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-graffiti"></div>
+      <div class="container">
+        <h1 class="logo" style="font-size: 2.5rem">ThriftHood.cy</h1>
+        <div class="social-links">
+          <a href="#" class="social-link">IG</a>
+          <a href="#" class="social-link">FB</a>
+          <a href="#" class="social-link">TT</a>
+          <a href="#" class="social-link">YT</a>
+        </div>
+        <p class="copyright">
+          © 2023 ThriftHood.cy | All Rights Reserved | Designed with Street Love
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // Loading animation
+      document.addEventListener("DOMContentLoaded", function () {
+        const loadingBar = document.querySelector(".loading-bar");
+        const loadingScreen = document.querySelector(".loading-screen");
+        const revealMask = document.querySelector(".reveal-mask");
+
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress += Math.random() * 10;
+          if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+
+            setTimeout(() => {
+              loadingScreen.style.opacity = "0";
+              loadingScreen.style.pointerEvents = "none";
+
+              // Page reveal animation
+              revealMask.style.transform = "scaleY(0)";
+
+              // Start animations
+              initAnimations();
+
+              setTimeout(() => {
+                loadingScreen.style.display = "none";
+              }, 500);
+            }, 500);
+          }
+          loadingBar.style.width = `${progress}%`;
+        }, 100);
+
+        // Initialize drop countdown
+        initCountdown();
+      });
+
+      // Initialize GSAP animations
+      function initAnimations() {
+        // Animate stickers
+        document.querySelectorAll(".sticker").forEach((sticker) => {
+          sticker.style.animation = `floatSticker 4s ease-in-out infinite, spraypaint 0.5s ${
+            sticker.dataset.index * 0.2
+          }s forwards`;
+          sticker.style.opacity = "1";
+        });
+
+        // Scroll animations
+        const animateOnScroll = (elements, className) => {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add(className);
+                }
+              });
+            },
+            { threshold: 0.2 }
+          );
+
+          elements.forEach((el) => observer.observe(el));
+        };
+
+        // Animate products
+        animateOnScroll(document.querySelectorAll(".product-card"), "animate");
+
+        // Animate about section
+        animateOnScroll([document.querySelector(".about-text")], "animate");
+        animateOnScroll([document.querySelector(".about-image")], "animate");
+
+        // Animate features
+        animateOnScroll(document.querySelectorAll(".feature-card"), "animate");
+
+        // Animate contact section
+        animateOnScroll([document.querySelector(".contact-info")], "animate");
+        animateOnScroll([document.querySelector(".contact-form")], "animate");
+      }
+
+      // Initialize countdown timer
+      function initCountdown() {
+        const countdown = () => {
+          // Set the date for the next drop (2 weeks from now)
+          const dropDate = new Date();
+          dropDate.setDate(dropDate.getDate() + 14);
+
+          const now = new Date().getTime();
+          const distance = dropDate - now;
+
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor(
+            (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          );
+          const minutes = Math.floor(
+            (distance % (1000 * 60 * 60)) / (1000 * 60)
+          );
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          document.getElementById("days").innerText = days
+            .toString()
+            .padStart(2, "0");
+          document.getElementById("hours").innerText = hours
+            .toString()
+            .padStart(2, "0");
+          document.getElementById("minutes").innerText = minutes
+            .toString()
+            .padStart(2, "0");
+          document.getElementById("seconds").innerText = seconds
+            .toString()
+            .padStart(2, "0");
+        };
+
+        countdown();
+        setInterval(countdown, 1000);
+      }
+
+      // Spray animation on mouse move
+      document.addEventListener("mousemove", function (e) {
+        const spray = document.querySelector(".cursor-spray");
+        spray.style.display = "block";
+        spray.style.left = `${e.clientX}px`;
+        spray.style.top = `${e.clientY}px`;
+
+        // Random color on each move
+        const colors = [
+          "var(--red)",
+          "var(--blue)",
+          "var(--green)",
+          "var(--yellow)",
+        ];
+        spray.style.backgroundColor =
+          colors[Math.floor(Math.random() * colors.length)];
+
+        setTimeout(() => {
+          spray.style.display = "none";
+        }, 200);
+      });
+
+      // Create spray effect when clicking on buttons
+      document.querySelectorAll(".btn").forEach((btn) => {
+        btn.addEventListener("click", function (e) {
+          const rect = this.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          const spray = document.createElement("div");
+          spray.classList.add("spray-animation");
+          this.appendChild(spray);
+
+          spray.style.left = `${x}px`;
+          spray.style.top = `${y}px`;
+
+          spray.style.transform = "scale(1)";
+          spray.style.opacity = "1";
+
+          // Play skateboard sound on button click
+          const sounds = ["click", "pop", "whoosh"];
+          const sound = sounds[Math.floor(Math.random() * sounds.length)];
+          playSound(sound);
+
+          setTimeout(() => {
+            spray.remove();
+          }, 500);
+        });
+      });
+
+      // Form spray effects
+      const formInputs = [
+        {
+          input: document.getElementById("nameInput"),
+          spray: document.getElementById("nameSpray"),
+        },
+        {
+          input: document.getElementById("emailInput"),
+          spray: document.getElementById("emailSpray"),
+        },
+        {
+          input: document.getElementById("messageInput"),
+          spray: document.getElementById("messageSpray"),
+        },
+      ];
+
+      formInputs.forEach(({ input, spray }) => {
+        input.addEventListener("focus", function () {
+          createSprayEffect(spray, this.dataset.color || "var(--yellow)");
+        });
+      });
+
+      function createSprayEffect(container, color) {
+        container.innerHTML = "";
+        const dotsCount = 50;
+
+        for (let i = 0; i < dotsCount; i++) {
+          const dot = document.createElement("div");
+          dot.classList.add("spray-dot");
+
+          const size = Math.random() * 5 + 2;
+          const posX = Math.random() * 100;
+          const posY = Math.random() * 100;
+
+          dot.style.width = `${size}px`;
+          dot.style.height = `${size}px`;
+          dot.style.left = `${posX}%`;
+          dot.style.top = `${posY}%`;
+          dot.style.backgroundColor = color;
+
+          dot.style.animationDelay = `${Math.random() * 0.5}s`;
+
+          container.appendChild(dot);
+
+          setTimeout(() => {
+            dot.style.opacity = "1";
+          }, 10);
+
+          setTimeout(() => {
+            dot.style.opacity = "0";
+          }, 2000 + Math.random() * 1000);
+        }
+      }
+
+      // Graffiti tag generator canvas
+      const canvas = document.getElementById("tagCanvas");
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#292929";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Drawing variables
+      let isDrawing = false;
+      let lastX = 0;
+      let lastY = 0;
+      let currentColor = "#FF4747";
+      let brushSize = 15;
+
+      // Start drawing
+      canvas.addEventListener("mousedown", function (e) {
+        isDrawing = true;
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+
+        // Draw a single dot if they just click
+        ctx.beginPath();
+        ctx.arc(lastX, lastY, brushSize / 2, 0, Math.PI * 2);
+        ctx.fillStyle = currentColor;
+        ctx.fill();
+
+        // Play spray sound
+        playSound("spray");
+      });
+
+      // Draw
+      canvas.addEventListener("mousemove", function (e) {
+        if (!isDrawing) return;
+
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = brushSize;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.stroke();
+
+        // Add spray effect dots around the line
+        for (let i = 0; i < 3; i++) {
+          const offsetX = (Math.random() - 0.5) * brushSize;
+          const offsetY = (Math.random() - 0.5) * brushSize;
+          ctx.beginPath();
+          ctx.arc(
+            e.offsetX + offsetX,
+            e.offsetY + offsetY,
+            Math.random() * (brushSize / 4),
+            0,
+            Math.PI * 2
+          );
+          ctx.fillStyle = currentColor;
+          ctx.fill();
+        }
+
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+      });
+
+      // Stop drawing
+      ["mouseup", "mouseout"].forEach((event) => {
+        canvas.addEventListener(event, () => {
+          isDrawing = false;
+        });
+      });
+
+      // Handle touch events for mobile
+      canvas.addEventListener("touchstart", function (e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+
+        isDrawing = true;
+        [lastX, lastY] = [x, y];
+
+        ctx.beginPath();
+        ctx.arc(lastX, lastY, brushSize / 2, 0, Math.PI * 2);
+        ctx.fillStyle = currentColor;
+        ctx.fill();
+
+        playSound("spray");
+      });
+
+      canvas.addEventListener("touchmove", function (e) {
+        e.preventDefault();
+        if (!isDrawing) return;
+
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(x, y);
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = brushSize;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.stroke();
+
+        for (let i = 0; i < 3; i++) {
+          const offsetX = (Math.random() - 0.5) * brushSize;
+          const offsetY = (Math.random() - 0.5) * brushSize;
+          ctx.beginPath();
+          ctx.arc(
+            x + offsetX,
+            y + offsetY,
+            Math.random() * (brushSize / 4),
+            0,
+            Math.PI * 2
+          );
+          ctx.fillStyle = currentColor;
+          ctx.fill();
+        }
+
+        [lastX, lastY] = [x, y];
+      });
+
+      canvas.addEventListener("touchend", function () {
+        isDrawing = false;
+      });
+
+      // Color picker
+      document.querySelectorAll(".color-picker").forEach((picker) => {
+        picker.addEventListener("click", function () {
+          // Remove active class from all
+          document
+            .querySelectorAll(".color-picker")
+            .forEach((p) => p.classList.remove("active"));
+          // Add active to clicked
+          this.classList.add("active");
+          // Set the current color
+          currentColor = this.dataset.color;
+
+          playSound("click");
+        });
+      });
+
+      // Brush size
+      document.querySelectorAll(".brush-size").forEach((brushBtn) => {
+        brushBtn.addEventListener("click", function () {
+          // Remove active class from all
+          document
+            .querySelectorAll(".brush-size")
+            .forEach((b) => b.classList.remove("active"));
+          // Add active to clicked
+          this.classList.add("active");
+          // Set the brush size
+          brushSize = parseInt(this.dataset.size);
+
+          playSound("click");
+        });
+      });
+
+      // Clear canvas
+      document
+        .getElementById("clearCanvas")
+        .addEventListener("click", function () {
+          ctx.fillStyle = "#292929";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          playSound("whoosh");
+        });
+
+      // Form submission with spray animation
+      document
+        .getElementById("submitBtn")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+
+          // Validate form (simple validation)
+          const nameInput = document.getElementById("nameInput");
+          const emailInput = document.getElementById("emailInput");
+          const messageInput = document.getElementById("messageInput");
+
+          if (nameInput.value && emailInput.value && messageInput.value) {
+            // Create success message with spray animation
+            const form = document.querySelector(".contact-form");
+            form.innerHTML = "";
+
+            const successMsg = document.createElement("div");
+            successMsg.classList.add("highlight");
+            successMsg.innerHTML =
+              "🎨 Message sent successfully! We'll get back to you soon.";
+            successMsg.style.fontSize = "1.5rem";
+            successMsg.style.textAlign = "center";
+            successMsg.style.padding = "50px 0";
+            successMsg.style.opacity = "0";
+
+            form.appendChild(successMsg);
+
+            // Create spray effect all over the form
+            createSprayEffect(form, "var(--green)");
+
+            setTimeout(() => {
+              successMsg.style.opacity = "1";
+              successMsg.style.transition = "opacity 0.5s ease";
+            }, 500);
+
+            playSound("success");
+          } else {
+            // Shake form as error indication
+            const form = document.querySelector(".contact-form");
+            form.style.animation = "glitch 0.3s 3";
+
+            setTimeout(() => {
+              form.style.animation = "";
+            }, 1000);
+
+            playSound("error");
+          }
+        });
+
+      // Sound effects
+      function playSound(type) {
+        // In a real implementation, you would use actual audio files
+        // This is just a placeholder for the concept
+        console.log(`Playing sound: ${type}`);
+      }
+
+      // Drip effect on certain elements
+      document.querySelectorAll(".section-title").forEach((title) => {
+        const color = title.style.getPropertyValue("--color") || "var(--red)";
+        const dripsCount = 5;
+
+        for (let i = 0; i < dripsCount; i++) {
+          const drip = document.createElement("div");
+          drip.classList.add("drip");
+          drip.style.setProperty("--color", color);
+          drip.style.setProperty(
+            "--drip-height",
+            `${Math.random() * 50 + 20}px`
+          );
+          drip.style.left = `${Math.random() * 100}%`;
+          drip.style.animationDelay = `${Math.random() * 1}s`;
+
+          title.appendChild(drip);
+        }
+      });
+
+      // Hover effects for product cards
+      document.querySelectorAll(".product-card").forEach((card) => {
+        card.addEventListener("mouseenter", function () {
+          playSound("hover");
+        });
+      });
+
+      // Simple scroll event to move elements on scroll
+      window.addEventListener("scroll", function () {
+        const scrollPosition = window.scrollY;
+
+        // Parallax effect for about image
+        const aboutImage = document.querySelector(".about-image");
+        if (aboutImage) {
+          aboutImage.style.transform = `translateY(${scrollPosition * 0.05}px)`;
+        }
+      });
+    </script>
+  </body>
+</html>
