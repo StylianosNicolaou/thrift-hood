@@ -42,30 +42,30 @@ const Navbar = () => {
             whileHover={{ scale: 1.05, rotate: -2 }}
             transition={{ type: "spring", stiffness: 200, damping: 10 }}
           >
-            <Link href="#home" className="block relative">
-              {/* Logo container with VHS effect */}
-              <div className="vhs-tracking bg-glitch relative">
-                {/* Actual logo image */}
-                <div className="relative h-12 md:h-14 w-auto">
-                  <Image
-                    src="/thrifthood_logo.png"
-                    alt="ThriftHood.cy Logo"
-                    width={64}
-                    height={64}
-                    className="object-contain h-full animate-vhs-flicker"
-                    style={{
-                      filter: "contrast(1.1) brightness(1.1)",
-                      mixBlendMode: "lighten",
-                    }}
-                  />
-                </div>
+            <Link href="#home" className="block">
+              {/* Circular logo container with VHS effect */}
+              <div className="relative bg-glitch rounded-full overflow-hidden border-2 border-white shadow-retro h-14 w-14 md:h-16 md:w-16 flex items-center justify-center">
+                {/* Actual logo image - circular */}
+                <Image
+                  src="/thrifthood_logo.png"
+                  alt="ThriftHood.cy Logo"
+                  width={80}
+                  height={80}
+                  className="object-cover w-full h-full animate-vhs-flicker rounded-full"
+                  style={{
+                    filter: "contrast(1.1) brightness(1.1)",
+                    mixBlendMode: "lighten",
+                  }}
+                />
 
                 {/* Optional: Static noise overlay */}
-                <div className="absolute inset-0 bg-static opacity-10 mix-blend-overlay pointer-events-none"></div>
-
-                {/* Optional tracking line */}
-                <div className="absolute left-0 w-full h-[1px] bg-thrift-teal opacity-60 top-1/3 animate-tracking-line"></div>
+                <div className="absolute inset-0 bg-static opacity-10 mix-blend-overlay pointer-events-none rounded-full"></div>
               </div>
+
+              {/* Brand name next to logo */}
+              <span className="sr-only md:not-sr-only ml-3 inline-block font-graffiti text-xl text-thrift-teal">
+                ThriftHood.cy
+              </span>
             </Link>
           </motion.div>
 

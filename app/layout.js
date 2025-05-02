@@ -1,6 +1,7 @@
+import { Rubik, Permanent_Marker, VT323 } from "next/font/google";
 import "./globals.css";
-import { Rubik, Permanent_Marker } from "next/font/google";
 
+// Font configurations
 const rubik = Rubik({
   subsets: ["latin"],
   variable: "--font-rubik",
@@ -15,6 +16,12 @@ const permanentMarker = Permanent_Marker({
   weight: ["400"],
 });
 
+const vt323 = VT323({
+  subsets: ["latin"],
+  variable: "--font-vt323",
+  weight: ["400"],
+});
+
 export const metadata = {
   title: "ThriftHood.cy | Vintage Chaos Meets Street Culture",
   description:
@@ -23,8 +30,24 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${rubik.variable} ${permanentMarker.variable}`}>
-      <body>{children}</body>
+    <html
+      lang="en"
+      className={`${rubik.variable} ${permanentMarker.variable} ${vt323.variable}`}
+    >
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link rel="manifest" href="/manifest.json" />
+      </head>
+      <body className="bg-thrift-black text-white">{children}</body>
     </html>
   );
 }

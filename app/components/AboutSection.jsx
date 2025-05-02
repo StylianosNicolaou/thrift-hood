@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SectionWrapper from "./SectionWrapper";
 import GraffitiText from "./GraffitiText";
 import Button from "./Button";
-
+import ScrollAnimationWrapper from "./ScrollAnimationWrapper";
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
@@ -59,15 +59,15 @@ const AboutSection = () => {
               Who We Are
             </p>
           </div>
-
-          <GraffitiText
-            element="h2"
-            className="text-3xl md:text-5xl mb-8 tracking-normal"
-            color="text-neon-green"
-          >
-            Stay Raw. Stay Recycled. Stay Hood.
-          </GraffitiText>
-
+          <ScrollAnimationWrapper type="graffiti">
+            <GraffitiText
+              element="h2"
+              className="text-3xl md:text-5xl mb-8 tracking-normal"
+              color="text-neon-green"
+            >
+              Stay Raw. Stay Recycled. Stay Hood.
+            </GraffitiText>
+          </ScrollAnimationWrapper>
           <div className="space-y-6 vintage-tear-edges bg-black/40 p-6 border border-white">
             <p className="text-base font-bold text-neon-pink mb-6 leading-relaxed">
               ThriftHood.cy is a movement: for the skaters, the creators, the

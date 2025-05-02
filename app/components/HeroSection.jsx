@@ -36,10 +36,11 @@ const HeroSection = () => {
         repeatRefresh: true,
       });
 
-      // Add a subtle floating animation to the logo
+      // Add a floating animation to the logo
       gsap.to(logoRef.current, {
         y: "+=10",
-        duration: 2,
+        rotation: "+=3",
+        duration: 2.5,
         ease: "sine.inOut",
         repeat: -1,
         yoyo: true,
@@ -73,46 +74,68 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-thrift-purple/30 to-black"></div>
       </div>
 
-      <div className="container mx-auto px-4 md:px-8 relative z-10 py-20 md:py-32">
+      <div className="container mx-auto px-4 md:px-8 relative z-10 py-20 md:py-24">
         <div className="max-w-4xl mx-auto">
-          {/* Logo display in hero section */}
-          <div
-            ref={logoRef}
-            className="relative w-full max-w-md mx-auto mb-12 vhs-tracking"
-          >
-            <div className="relative h-auto w-full bg-glitch p-4 border-2 border-white shadow-retro transform rotate-1">
-              <Image
-                src="/thrifthood_logo.png"
-                alt="ThriftHood.cy Logo"
-                width={600}
-                height={250}
-                className="w-full h-auto animate-vhs-flicker"
-                style={{
-                  filter: "contrast(1.2) brightness(1.2)",
-                  mixBlendMode: "lighten",
-                }}
-              />
+          {/* Featured circular logo */}
+          <div ref={logoRef} className="relative mx-auto mb-12 z-10">
+            <div className="relative flex justify-center">
+              {/* Main large circular logo */}
+              <div
+                className="relative rounded-full overflow-hidden border-4 border-thrift-teal shadow-retro bg-glitch vhs-tracking
+                         w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80"
+              >
+                <Image
+                  src="/thrifthood_logo.png"
+                  alt="ThriftHood.cy Logo"
+                  width={320}
+                  height={320}
+                  className="w-full h-full object-cover animate-vhs-flicker"
+                  style={{
+                    filter: "contrast(1.2) brightness(1.2)",
+                    mixBlendMode: "lighten",
+                  }}
+                />
 
-              {/* Scan line */}
-              <div className="absolute left-0 w-full h-[3px] bg-thrift-teal opacity-60 top-1/2 -translate-y-1/2"></div>
+                {/* Static overlay */}
+                <div className="absolute inset-0 bg-static opacity-10 mix-blend-overlay pointer-events-none"></div>
+              </div>
 
-              {/* Static overlay */}
-              <div className="absolute inset-0 bg-static opacity-10 mix-blend-overlay pointer-events-none"></div>
+              {/* VHS timestamp */}
+              <div className="absolute -bottom-2 -right-2 bg-black/80 px-2 py-1 font-retro text-thrift-teal text-sm border border-thrift-teal">
+                REC 90:12:31
+              </div>
+
+              {/* Decorative tape strips */}
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-8 bg-thrift-yellow/60 transform -rotate-6"></div>
+              <div className="absolute -bottom-4 left-1/4 w-16 h-8 bg-thrift-red/60 transform rotate-12"></div>
             </div>
+          </div>
 
-            {/* VHS timestamp */}
-            <div className="absolute bottom-0 right-0 bg-black/80 px-2 py-1 font-retro text-thrift-teal text-sm transform translate-y-2 translate-x-2">
-              REC 90:12:31
-            </div>
+          {/* Brand tagline */}
+          <div className="text-center mb-8">
+            <GraffitiText
+              element="h2"
+              className="text-3xl md:text-4xl lg:text-5xl mb-2"
+              color="text-thrift-yellow"
+            >
+              Vintage Chaos
+            </GraffitiText>
+            <GraffitiText
+              element="h2"
+              className="text-3xl md:text-4xl lg:text-5xl"
+              color="text-thrift-teal"
+            >
+              Meets Street Culture
+            </GraffitiText>
           </div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="vintage-box p-6 bg-black/70 border-2 border-white max-w-2xl transform -rotate-1"
+            className="vintage-box p-6 bg-black/70 border-2 border-white max-w-2xl mx-auto transform -rotate-1"
           >
-            <p className="text-base md:text-lg text-thrift-teal mb-0 font-bold uppercase">
+            <p className="text-base md:text-lg text-thrift-teal mb-0 font-bold uppercase text-center">
               A visual playground born from the grit of 90s streetwear and the
               spirit of thrift culture. No algorithms. No gloss. Just chaotic
               creativity and pure thrift energy.
@@ -123,31 +146,13 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="mt-12 flex flex-col sm:flex-row items-center gap-6"
+            className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6"
           >
             <Button variant="primary">Shop the Collection</Button>
             <Button variant="secondary">Join the Movement</Button>
           </motion.div>
         </div>
       </div>
-
-      <motion.div
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: 0.8,
-          delay: 1.2,
-          repeat: Infinity,
-          repeatType: "reverse",
-          repeatDelay: 0.5,
-        }}
-      >
-        <div className="h-16 w-2 bg-thrift-teal mx-auto"></div>
-        <div className="mt-2 text-xs uppercase tracking-widest text-thrift-teal font-bold">
-          Scroll
-        </div>
-      </motion.div>
     </section>
   );
 };
