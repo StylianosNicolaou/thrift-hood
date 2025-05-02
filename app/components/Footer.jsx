@@ -183,7 +183,15 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            © {currentYear} ThriftHood.cy | Stay Raw. Stay Recycled. Stay Hood.
+            © {currentYear} ThriftHood.cy |{" "}
+            <a
+              href="https://ace-portfolio-theta.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-thrift-yellow transition-colors"
+            >
+              Designed, Developed and Deployed by ACE
+            </a>
           </motion.p>
 
           <motion.div
