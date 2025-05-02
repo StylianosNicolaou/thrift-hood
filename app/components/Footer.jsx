@@ -71,34 +71,6 @@ const Footer = () => {
                 {/* Static overlay */}
                 <div className="absolute inset-0 rounded-full bg-static opacity-10 mix-blend-overlay"></div>
               </div>
-
-              {/* Brand name next to logo */}
-              <div className="ml-4">
-                <span className="text-thrift-red font-graffiti text-3xl tracking-wide">
-                  Thrift
-                </span>
-                <span className="text-thrift-teal font-graffiti text-3xl tracking-wide">
-                  Hood
-                </span>
-                <span className="text-thrift-yellow align-super text-lg font-bold">
-                  .cy
-                </span>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="text-white bg-thrift-purple border-2 border-white p-4 transform rotate-2 shadow-retro-sm max-w-md"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              <p className="text-base font-bold">
-                A visual playground born from the grit of 90s streetwear and the
-                spirit of thrift culture. We remix the raw with the refined —
-                blending torn textures, retro prints, graffiti tags, and
-                nostalgic grit.
-              </p>
             </motion.div>
 
             <motion.div
@@ -194,12 +166,11 @@ const Footer = () => {
               transition={{ duration: 0.6, delay: 0.1 }}
             >
               <p className="text-thrift-red text-lg font-bold">
-                crew@thrifthood.cy
-              </p>
-              <p className="text-thrift-teal text-lg font-bold">
                 @thrifthood.cy
               </p>
-              <p className="text-white">The Streets, Anytown USA</p>
+              <p className="text-white">
+                Private Str, Megaro Mitsi St, Nicosia 1065
+              </p>
             </motion.div>
           </div>
         </div>

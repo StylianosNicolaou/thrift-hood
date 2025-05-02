@@ -61,11 +61,6 @@ const Navbar = () => {
                 {/* Optional: Static noise overlay */}
                 <div className="absolute inset-0 bg-static opacity-10 mix-blend-overlay pointer-events-none rounded-full"></div>
               </div>
-
-              {/* Brand name next to logo */}
-              <span className="sr-only md:not-sr-only ml-3 inline-block font-graffiti text-xl text-thrift-teal">
-                ThriftHood.cy
-              </span>
             </Link>
           </motion.div>
 

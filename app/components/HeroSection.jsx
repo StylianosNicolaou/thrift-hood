@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import Image from "next/image";
@@ -9,12 +9,15 @@ import GraffitiText from "./GraffitiText";
 const HeroSection = () => {
   const heroRef = useRef(null);
   const imageRef = useRef(null);
-  const textRef = useRef(null);
   const logoRef = useRef(null);
+  const [trackingLines, setTrackingLines] = useState([]);
 
   useEffect(() => {
+    // Generate fixed tracking lines on mount
+    const lines = Array.from({ length: 20 }, () => Math.random() * 100);
+    setTrackingLines(lines);
+
     const ctx = gsap.context(() => {
-      // Create a distorted, glitching effect for the background
       gsap.to(imageRef.current, {
         duration: 0.2,
         x: "+=5",
@@ -25,7 +28,6 @@ const HeroSection = () => {
         repeatRefresh: true,
       });
 
-      // Animate the VHS tracking lines effect
       gsap.from(".tracking-line", {
         y: -100,
         height: Math.random() * 10 + 5,
@@ -36,7 +38,6 @@ const HeroSection = () => {
         repeatRefresh: true,
       });
 
-      // Add a floating animation to the logo
       gsap.to(logoRef.current, {
         y: "+=10",
         rotation: "+=3",
@@ -56,13 +57,13 @@ const HeroSection = () => {
       ref={heroRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-thrift-black"
     >
-      {/* VHS tracking effect lines */}
+      {/* VHS tracking lines */}
       <div className="absolute inset-0 overflow-hidden opacity-40 mix-blend-screen">
-        {[...Array(20)].map((_, i) => (
+        {trackingLines.map((top, i) => (
           <div
             key={i}
             className="tracking-line absolute w-full h-1 bg-white opacity-30"
-            style={{ top: `${Math.random() * 100}%` }}
+            style={{ top: `${top}%` }}
           ></div>
         ))}
       </div>
@@ -76,10 +77,9 @@ const HeroSection = () => {
 
       <div className="container mx-auto px-4 md:px-8 relative z-10 py-20 md:py-24">
         <div className="max-w-4xl mx-auto">
-          {/* Featured circular logo */}
+          {/* Logo */}
           <div ref={logoRef} className="relative mx-auto mb-12 z-10">
             <div className="relative flex justify-center">
-              {/* Main large circular logo */}
               <div
                 className="relative rounded-full overflow-hidden border-4 border-thrift-teal shadow-retro bg-glitch vhs-tracking
                          w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80"
@@ -95,23 +95,17 @@ const HeroSection = () => {
                     mixBlendMode: "lighten",
                   }}
                 />
-
-                {/* Static overlay */}
                 <div className="absolute inset-0 bg-static opacity-10 mix-blend-overlay pointer-events-none"></div>
               </div>
-
-              {/* VHS timestamp */}
               <div className="absolute -bottom-2 -right-2 bg-black/80 px-2 py-1 font-retro text-thrift-teal text-sm border border-thrift-teal">
                 REC 90:12:31
               </div>
-
-              {/* Decorative tape strips */}
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-8 bg-thrift-yellow/60 transform -rotate-6"></div>
               <div className="absolute -bottom-4 left-1/4 w-16 h-8 bg-thrift-red/60 transform rotate-12"></div>
             </div>
           </div>
 
-          {/* Brand tagline */}
+          {/* Headings */}
           <div className="text-center mb-8">
             <GraffitiText
               element="h2"
@@ -129,6 +123,7 @@ const HeroSection = () => {
             </GraffitiText>
           </div>
 
+          {/* Description */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -142,6 +137,7 @@ const HeroSection = () => {
             </p>
           </motion.div>
 
+          {/* Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
