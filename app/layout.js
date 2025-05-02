@@ -23,7 +23,7 @@ const vt323 = VT323({
 });
 
 export const metadata = {
-  title: "ThriftHood.cy | Vintage Chaos Meets Street Culture",
+  title: "ThriftHood.cy",
   description:
     "A visual playground born from the grit of 90s streetwear and the spirit of thrift culture. Stay raw. Stay recycled. Stay hood.",
   icons: {
