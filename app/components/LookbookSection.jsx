@@ -110,7 +110,7 @@ const LookbookSection = () => {
             element="h2"
             className="text-4xl md:text-6xl text-black inline-block relative z-10"
           >
-            THRIFT RENTALS
+            THRIFT
           </GraffitiText>
           <div className="mt-1 text-black text-xs uppercase tracking-wider font-bold">
             EST. 1991 — BROWSE COLLECTION — MEMBERS ONLY
@@ -124,23 +124,6 @@ const LookbookSection = () => {
             the old days.
           </p>
         </div>
-      </div>
-
-      {/* Category Filters - Styled like VHS store section labels */}
-      <div className="mb-12 flex overflow-x-auto pb-2 gap-4 justify-center max-w-5xl mx-auto">
-        {categories.map((category) => (
-          <button
-            key={category}
-            className={`px-4 py-2 text-sm font-bold uppercase whitespace-nowrap transition-all ${
-              selectedCategory === category
-                ? "bg-thrift-red text-white transform -rotate-1 border-2 border-white shadow-retro"
-                : "bg-thrift-black text-thrift-teal border border-thrift-teal hover:bg-thrift-teal/20"
-            }`}
-            onClick={() => setSelectedCategory(category)}
-          >
-            {category}
-          </button>
-        ))}
       </div>
 
       {/* VHS Shelf */}
@@ -217,11 +200,6 @@ const LookbookSection = () => {
                       </div>
                       <div className="text-white/50 text-xs">PLAY ▶</div>
                     </div>
-                  </div>
-
-                  {/* "Rental" sticker */}
-                  <div className="absolute top-12 right-0 transform rotate-45 bg-thrift-yellow text-black text-xs py-1 px-3 font-bold shadow-md">
-                    RENTAL
                   </div>
                 </div>
               </motion.div>
@@ -365,33 +343,26 @@ const LookbookSection = () => {
                       Eject
                     </button>
                   </div>
-
-                  {/* Rental warning sticker */}
-                  <div className="absolute bottom-6 right-6 bg-thrift-yellow text-black p-2 transform rotate-12 font-bold text-sm w-24 text-center shadow-retro">
-                    MUST BE RETURNED BY MIDNIGHT
-                  </div>
                 </div>
               </div>
 
               {/* VCR Controls */}
               <div className="bg-gradient-to-r from-gray-900 to-black p-3 border-t-2 border-gray-700 flex justify-center space-x-6">
-                {["PLAY", "STOP", "REW", "FF", "PAUSE", "EJECT"].map(
-                  (control) => (
-                    <button
-                      key={control}
-                      className={`font-retro text-xs px-3 py-1 border border-gray-600 ${
-                        control === "EJECT"
-                          ? "bg-thrift-red text-white"
-                          : "bg-black text-gray-400 hover:text-thrift-teal"
-                      }`}
-                      onClick={() =>
-                        control === "EJECT" && setIsDetailOpen(false)
-                      }
-                    >
-                      {control}
-                    </button>
-                  )
-                )}
+                {[].map((control) => (
+                  <button
+                    key={control}
+                    className={`font-retro text-xs px-3 py-1 border border-gray-600 ${
+                      control === "EJECT"
+                        ? "bg-thrift-red text-white"
+                        : "bg-black text-gray-400 hover:text-thrift-teal"
+                    }`}
+                    onClick={() =>
+                      control === "EJECT" && setIsDetailOpen(false)
+                    }
+                  >
+                    {control}
+                  </button>
+                ))}
               </div>
             </motion.div>
           </motion.div>
