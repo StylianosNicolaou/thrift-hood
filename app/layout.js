@@ -26,6 +26,9 @@ export const metadata = {
   title: "ThriftHood.cy | Vintage Chaos Meets Street Culture",
   description:
     "A visual playground born from the grit of 90s streetwear and the spirit of thrift culture. Stay raw. Stay recycled. Stay hood.",
+  icons: {
+    icon: "/thrifthood_logo.png", // Can also be .png or .svg
+  },
 };
 
 export default function RootLayout({ children }) {
