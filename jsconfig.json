@@ -1,7 +1,14 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
-    }
-  }
+      "@/*": ["./app/*"],
+      "@components/*": ["./app/components/*"],
+      "@assets/*": ["./public/assets/*"],
+      "@fonts/*": ["./public/fonts/*"],
+      "@textures/*": ["./public/assets/textures/*"]
+    },
+    "jsx": "preserve"
+  },
+  "exclude": ["node_modules", ".next", "out"]
 }

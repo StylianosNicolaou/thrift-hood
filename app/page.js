@@ -1,18 +1,15 @@
-"use client";
-
-import AboutSection from "./components/AboutSection";
-import ContactSection from "./components/ContactSection";
+// app/page.js
 import HeroSection from "./components/HeroSection";
-import LookbookSection from "./components/LookbookSection";
-import NewArrivalsSection from "./components/NewArrivals";
+import LookbookGallery from "./components/LookbookSection";
+import ContactSection from "./components/ContactSection";
+import AboutSection from "./components/AboutSection";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen px-4">
+    <main className="min-h-screen bg-thrift-black">
       <HeroSection />
       <AboutSection />
-      <LookbookSection />
-      <NewArrivalsSection />
+      <LookbookGallery />
       <ContactSection />
     </main>
   );
