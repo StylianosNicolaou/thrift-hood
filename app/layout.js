@@ -1,5 +1,6 @@
 import { Rubik, Permanent_Marker, VT323 } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 
 // Font configurations
 const rubik = Rubik({
@@ -50,7 +51,10 @@ export default function RootLayout({ children }) {
         />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className="bg-thrift-black text-white">{children}</body>
+      <body className="bg-thrift-black text-white">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
