@@ -1,33 +1,30 @@
-// app/layout.js
-import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import { Rubik, Permanent_Marker } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const rubik = Rubik({
+  subsets: ["latin"],
+  variable: "--font-rubik",
+  display: "swap",
+  weight: ["400", "500", "700", "900"],
+});
+
+const permanentMarker = Permanent_Marker({
+  subsets: ["latin"],
+  variable: "--font-permanent-marker",
+  display: "swap",
+  weight: ["400"],
+});
 
 export const metadata = {
-  title: "ThriftHood.cy | 90s Streetwear & Vintage Fashion",
+  title: "ThriftHood.cy | Vintage Chaos Meets Street Culture",
   description:
-    "90s-inspired skatewear and vintage streetwear based in Cyprus. Authentic urban threads with graffiti soul and skate culture attitude.",
+    "A visual playground born from the grit of 90s streetwear and the spirit of thrift culture. Stay raw. Stay recycled. Stay hood.",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={inter.className}>
-        {/* Very lightweight noise texture overlay */}
-        <div className="fixed inset-0 css-noise pointer-events-none z-50 opacity-5"></div>
-
-        {/* Navigation */}
-        <Navbar />
-
-        {/* Main content */}
-        {children}
-
-        {/* Footer */}
-        <Footer />
-      </body>
+    <html lang="en" className={`${rubik.variable} ${permanentMarker.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

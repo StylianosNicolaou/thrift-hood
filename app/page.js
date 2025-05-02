@@ -1,16 +1,19 @@
-// app/page.js
+import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
-import LookbookGallery from "./components/LookbookSection";
-import ContactSection from "./components/ContactSection";
 import AboutSection from "./components/AboutSection";
+import LookbookSection from "./components/LookbookSection";
+import ContactSection from "./components/ContactSection";
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-thrift-black">
+    <main className="bg-black text-white">
+      <Navbar />
       <HeroSection />
       <AboutSection />
-      <LookbookGallery />
+      <LookbookSection />
       <ContactSection />
+      <Footer />
     </main>
   );
 }
